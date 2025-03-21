@@ -1,0 +1,13 @@
+# setting up a conda environment 
+# create env:
+# conda env create -f [yaml file name]
+
+name: dagster-env 
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - spyder
+  - python=3.11.5
+  - dagster=1.7.15 
+  - minio
