@@ -5,7 +5,7 @@ Created on Fri Mar 21 09:10:32 2025
 
 @author: bernd
 """
-from utils import ExportConfig
+from .base import ExportConfig
 
 used_conf = ExportConfig()
 

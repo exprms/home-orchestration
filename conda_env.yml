@@ -11,3 +11,4 @@ dependencies:
   - python=3.11.5
   - dagster=1.7.15 
   - minio
+  - odfpy

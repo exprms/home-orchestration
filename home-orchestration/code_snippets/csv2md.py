@@ -9,9 +9,9 @@ import pandas as pd
 import argparse
 import os
 
-from utils import MDTag
-import config
-import custom_logger
+from util.base import MDTag
+import util.config as cf
+import util.custom_logger as cl
 
 
 class TagNotFoundError(Exception):
@@ -55,7 +55,7 @@ def dataframe_to_markdown(df: pd.DataFrame, header: str, column_map: dict):
     """
     # Return a message if the DataFrame is empty
     if df.empty:
-        custom_logger.logger.warning("No Entries with given tags - Creating Empty File")
+        cl.logger.warning("No Entries with given tags - Creating Empty File")
         return "No data available for the specified filters."
     
     df.rename(columns=column_map, inplace=True)
@@ -75,7 +75,7 @@ def main(csv_file_path: str, dest_path: str, column_map: dict, sortby: str, tagg
         columns = list(column_map.keys())
         
         # Read the DataFrame from the CSV file
-        custom_logger.logger.info(f"Read CSV File {csv_file_path}")
+        cl.logger.info(f"Read CSV File {csv_file_path}")
         _df = pd.read_csv(csv_file_path, low_memory=False, sep=";")
         
         # Sort the DataFrame by the 'Name' column in ascending order (A-Z)
@@ -84,15 +84,15 @@ def main(csv_file_path: str, dest_path: str, column_map: dict, sortby: str, tagg
         # Check if all specified tags exist in the DataFrame's columns
         for tag in tagging.sorted:
             if tag not in df.columns:
-                custom_logger.logger.error(f"Tag '{tag}' does not exist in the CSVFile columns.")
+                cl.logger.error(f"Tag '{tag}' does not exist in the CSVFile columns.")
                 raise TagNotFoundError("Tag not found")
 
         # Filter the DataFrame based on the specified tags and select columns
-        custom_logger.logger.info(f"Looking for entries with trags: {tagging.tagstring}")
+        cl.logger.info(f"Looking for entries with trags: {tagging.tagstring}")
         filtered_df = filter_dataframe(df=df, tags=tagging.sorted, columns=columns)
 
         # Convert the filtered DataFrame to Markdown format
-        custom_logger.logger.info("Creating markdown file")
+        cl.logger.info("Creating markdown file")
         markdown_content = dataframe_to_markdown(df=filtered_df, header=tagging.md_header, column_map=column_map)        
 
         # Create a hash from the tags for the filename
@@ -104,7 +104,7 @@ def main(csv_file_path: str, dest_path: str, column_map: dict, sortby: str, tagg
             md_file.write(tagging.yaml_header)
             md_file.write(markdown_content)
 
-        custom_logger.logger.info(f"Written markdown to {markdown_file_path}")
+        cl.logger.info(f"Written markdown to {markdown_file_path}")
 
     except TagNotFoundError as e:
         print(e)
@@ -129,10 +129,10 @@ if __name__ == '__main__':
 
     # Call the main function with parsed arguments
     main(
-        csv_file_path=config.used_conf.csv_path,
-        dest_path=config.used_conf.dest_path,
-        column_map=config.used_conf.column_map,
-        sortby=config.used_conf.sortby,
+        csv_file_path=cf.used_conf.csv_path,
+        dest_path=cf.used_conf.dest_path,
+        column_map=cf.used_conf.column_map,
+        sortby=cf.used_conf.sortby,
         tagging=mdtags
         )
 
