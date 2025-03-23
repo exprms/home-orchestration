@@ -115,8 +115,8 @@ if __name__ == '__main__':
     
     # Set up argument parsing
     parser = argparse.ArgumentParser(description='Filter DataFrame by tags and save to Markdown with a hash filename.')
-    # parser.add_argument('csv_file', type=str, help='Path to the CSV file containing the DataFrame.')
-    parser.add_argument('tags', nargs='*', help='Optional list of tags to filter by (e.g., tag1 tag2 tag3).')
+    # parser.add_argument('csv_file', type=str, help='Path to the CSV file containing the DataFrame.',)
+    parser.add_argument('tags', nargs='*', help='Optional list of tags to filter by (e.g., tag1 tag2 tag3).',)
 
     args = parser.parse_args()
 
