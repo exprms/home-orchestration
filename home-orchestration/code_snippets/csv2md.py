@@ -69,14 +69,17 @@ def dataframe_to_markdown(df: pd.DataFrame, header: str, column_map: dict):
     return markdown_content
 
 
-def main(csv_file_path: str, dest_path: str, column_map: dict, tagging: MDTag):
+def main(csv_file_path: str, dest_path: str, column_map: dict, sortby: str, tagging: MDTag):
     try:
         
         columns = list(column_map.keys())
         
         # Read the DataFrame from the CSV file
         custom_logger.logger.info(f"Read CSV File {csv_file_path}")
-        df = pd.read_csv(csv_file_path, low_memory=False, sep=";")
+        _df = pd.read_csv(csv_file_path, low_memory=False, sep=";")
+        
+        # Sort the DataFrame by the 'Name' column in ascending order (A-Z)
+        df = _df.sort_values(by=sortby, ascending=True)
 
         # Check if all specified tags exist in the DataFrame's columns
         for tag in tagging.sorted:
@@ -129,6 +132,7 @@ if __name__ == '__main__':
         csv_file_path=config.used_conf.csv_path,
         dest_path=config.used_conf.dest_path,
         column_map=config.used_conf.column_map,
+        sortby=config.used_conf.sortby,
         tagging=mdtags
         )
 

@@ -22,6 +22,7 @@ class ExportConfig(BaseModel):
         )
     csv_path: str=Field(default=os.getenv('CSV_SOURCE'))
     dest_path: str=Field(default=os.getenv('MD_PATH'))
+    sortby: str=Field(default='left')
     
     @property
     def cols(self):
